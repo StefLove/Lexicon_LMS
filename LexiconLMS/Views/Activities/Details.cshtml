@@ -1,0 +1,117 @@
+﻿@model LexiconLMS.Models.Activity
+
+@{
+    ViewBag.Title = "Details";
+
+}
+
+<h2>Details for activity: @Html.DisplayFor(model => model.ActivityName)</h2>
+
+<div class="row">
+    <hr />
+    <div class="col-xs-8">
+        <dl class="dl-horizontal">
+            <dt>
+                Module @Html.DisplayNameFor(model => model.Module.ModuleName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Module.ModuleName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ActivityType)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ActivityType)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ActivityStartDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ActivityStartDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ActivityEndDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ActivityEndDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ActivityDescription)
+            </dt>
+
+            <dd>
+                <span class="visible-print"> @Html.DisplayFor(model => model.ActivityDescription) </span> @* <---- for print *@
+                @Html.TextAreaFor(model => model.ActivityDescription, new { @class = "hidden-print" })    @* <---- for screen view *@
+            </dd>
+        </dl>
+    </div>
+    @if (User.IsInRole("Teacher"))
+    {
+        <div class="col-xs-4">
+            <dl>
+                <dt>Students that have not handed in assignment:</dt>
+                @{
+                    var students = Model.Module.Course.Students.Where(s => !s.Documents.Where(d => d.ActivityId == Model.ActivityId).Any()).ToList(); // Grabs all students in the course of the assignment, then limits it to only those that have not uploaded a document on that assignment.
+                    foreach (var item in students)
+                    {
+                        <dd>@item.UserFullName</dd>
+                    }
+                }
+            </dl>
+        </div>
+    }
+</div>
+
+@Html.Action("DocumentList", new { role = "Teacher", activityId = Model.ActivityId })
+
+@Html.Action("DocumentList", new { role = "Student", ontime = true, activityId = Model.ActivityId })
+
+@Html.Action("DocumentList", new { role = "Student", ontime = false, activityId = Model.ActivityId })
+
+
+
+<p>
+    @ViewBag.Message
+</p>
+<p class="hidden-print">
+    @if (User.IsInRole("Student"))
+    {
+        if (Request.UrlReferrer != null)
+        {
+            @*<a href="@Request.UrlReferrer.ToString()">Back</a>*@
+            @Html.ActionLink(" ", "", "", null, new { @class = "glyphicon glyphicon-arrow-left", href = @Request.UrlReferrer.ToString(), style = "font-size:22px; margin-right:30px", title = "Back" })
+        }
+        else
+        {
+            @Html.ActionLink(" ", "Details", "Modules", new { id = Model.ModuleId }, new { @class = "glyphicon glyphicon-arrow-left", style = "font-size:22px; margin-right:30px", title = "Back to module " + Model.Module.ModuleName })
+
+        }
+    }
+    @if (User.IsInRole("Teacher"))
+    {
+        @Html.ActionLink(" ", "Details", "Modules", new { id = Model.ModuleId }, new { @class = "glyphicon glyphicon-arrow-left", style = "font-size:22px; margin-right:30px;", title = "Back to module " + Model.Module.ModuleName })
+        if (Model.ActivityEndDate > DateTime.Now)
+        {
+            @Html.ActionLink(" ", "Edit", new { id = Model.ActivityId }, new { @class = "glyphicon glyphicon-edit", style = "font-size:22px; margin-right:30px;", title = "Edit activity" })
+        }
+    }
+    @Html.ActionLink(" ", "uploadFile", "Activities", new { id = Model.ActivityId }, new { @class = "glyphicon glyphicon-upload", style = "font-size:22px; margin-right:40px", title = "Upload new activity file " })
+    @if (User.IsInRole("Teacher"))
+    {
+        @Html.ActionLink(" ", "Delete", new { id = Model.ActivityId }, new { @class = "glyphicon glyphicon-trash", style = "font-size:22px; color:red;", title = "Delete " + Model.ActivityName })
+    }
+</p>
+<script type="text/javascript">
+    document.getElementById("ActivityDescription").style.maxWidth = "650px";
+    document.getElementById("ActivityDescription").cols = "100";
+    document.getElementById("ActivityDescription").rows = "5";
+    document.getElementById("ActivityDescription").readOnly = true;
+</script>

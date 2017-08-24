@@ -1,0 +1,56 @@
+﻿@model LexiconLMS.Models.Course
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourseName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourseStartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseEndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourseEndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourseDescription)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color hidden-print">
+            @Html.ActionLink(" ", "Index", null, new { @class = "glyphicon glyphicon-arrow-left", title = "Back to course list", style = "font-size:22px; margin-right:60px;" })
+            <button type="submit" value="Delete" class="btn btn-danger" title = "Delete the course @Model.CourseName"><span class="glyphicon glyphicon-trash" style = "font-size:16px"></span></button>
+        </div>
+    }
+</div>

@@ -1,0 +1,96 @@
+﻿@model LexiconLMS.Models.Activity
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "Activities", new { redirectString = ViewBag.RedirectString }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Activity</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ActivityId)
+        @Html.HiddenFor(model => model.ModuleId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActivityType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.ActivityType, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ActivityType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActivityName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ActivityName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ActivityName, "", new { @class = "text-danger" })
+                <span class="field-validation-error text-danger">@ViewBag.Name</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActivityStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ActivityStartDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                @Html.ValidationMessageFor(model => model.ActivityStartDate, "", new { @class = "text-danger" })
+                @if (ViewBag.StartDate != null)
+                {
+                    <span class="field-validation-error text-danger">@ViewBag.StartDate</span>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActivityEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ActivityEndDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                @Html.ValidationMessageFor(model => model.ActivityEndDate, "", new { @class = "text-danger" })
+                @if (ViewBag.EndDate != null)
+                {
+                    <span class="field-validation-error text-danger">@ViewBag.EndDate</span>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ActivityDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ActivityDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ActivityDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary hidden-print" title="Save the changes for @Model.ActivityName"><span class="glyphicon glyphicon-save"></span></button>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @if (ViewBag.RedirectString != "Empty")
+    {
+        @Html.ActionLink(" ", "", "", null, new { @class = "glyphicon glyphicon-arrow-left", style = "font-size:22px;", href = ViewBag.RedirectString, title = "Back to list" })
+    }
+    else
+    {
+        @Html.ActionLink(" ", "Details", new { id = Model.ActivityId }, new { @class = "glyphicon glyphicon-arrow-left", style = "font-size:22px", title = "Back to the activity" })
+
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    @Scripts.Render("~/bundles/jqueryuiTime")
+    @Styles.Render("~/Content/cssjqryUiTime")
+    <script type="text/javascript" src="~/Scripts/DateTimePicker.js"></script>
+}
