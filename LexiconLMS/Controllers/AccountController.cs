@@ -627,14 +627,12 @@ namespace LexiconLMS.Controllers
             try
             {
                 string ParticipantFilePath = Path.Combine(Server.MapPath("~/Upload"), Path.GetFileName(ParticipantListFile.FileName));
-
-                //ParticipantListFile.SaveAs(Server.MapPath("~/App_Data/" + ParticipantListFile.FileName));
+                
                 ParticipantListFile.SaveAs(ParticipantFilePath);
 
                 var _userStore = new Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>(db);
                 var _userManager = new UserManager<ApplicationUser>(_userStore);
 
-                //XDocument xdocFromFile = XDocument.Load(Server.MapPath("~/App_Data/" + ParticipantListFile.FileName));
                 XDocument xdocFromFile = XDocument.Load(ParticipantFilePath);
 
                 XElement studentXList = xdocFromFile.Root.Elements().ElementAt(4); //Excel 2003: ElementAt(3) 
