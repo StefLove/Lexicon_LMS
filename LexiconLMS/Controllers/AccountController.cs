@@ -626,7 +626,7 @@ namespace LexiconLMS.Controllers
         {
             try
             {
-                string ParticipantFilePath = Path.Combine(Server.MapPath("~/App_Data"), Path.GetFileName(ParticipantListFile.FileName));
+                string ParticipantFilePath = Path.Combine(Server.MapPath("~/Upload"), Path.GetFileName(ParticipantListFile.FileName));
 
                 //ParticipantListFile.SaveAs(Server.MapPath("~/App_Data/" + ParticipantListFile.FileName));
                 ParticipantListFile.SaveAs(ParticipantFilePath);
